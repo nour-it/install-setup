@@ -40,5 +40,17 @@ git config --global user.name 'nourit'
 git config --global user.email 'reply.nourit@gmail.com'
 echo "git installed" >> log
 
+# screenkey
+unzip -o -q "./tools/screenkey.zip" -d "./tools/screenkey"
+cd ./tools/screenkey/screenkey-master
+sudo apt install -y python3-gi gir1.2-gtk-3.0 \
+ python3-gi-cairo python3-cairo \
+ python3-setuptools python3-babel \
+ python3-dbus fonts-font-awesome slop
+sudo ./setup.py install
+cd ../../../
+rm -rf "./tools/screenkey"
+echo "screenkey installed" >> log
+
 # done
 echo "done ----------" >> log  
