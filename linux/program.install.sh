@@ -52,3 +52,17 @@ sudo cp ./programs/kdenlive-24.02.2-x86_64.AppImage /usr/local/bin/kdenlive
 
 # fix broken packages
 sudo apt --fix-broken install
+
+# Insomnia | Postman
+sudo snap install -y insomnia postman
+
+# discord
+sudo snap install discord
+
+# Gcloud
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-475.0.0-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-475.0.0-linux-x86_64.tar.gz
+cp google-cloud-sdk/ ~/
+bash ~/google-cloud-sdk/install.sh
+rm -rf google-cloud-sdk/
+rm google-cloud-cli-475.0.0-linux-x86_64.tar.gz

@@ -1,0 +1,89 @@
+# !bin/bash
+home=$HOME
+
+# dns resolver
+sudo cp ./tools/dns.resolv /root/dns.resolv
+sudo chmod +x /root/dns.resolv
+echo "$(date)---------------" >> log
+echo "dns resolver configured" >> log
+
+# tools
+sudo apt update
+sudo apt install -y curl vim fish git htop tree gcc make i3 i3-wm 
+
+# fish
+echo '
+    set -gx ANDROID_HOME $HOME/Android/Sdk
+    set -gx PATH $PATH:$ANDROID_HOME/emulator
+    set -gx PATH $PATH:$ANDROID_HOME/platform-tools
+' > "${home}/.config/fish/config.fish"
+fish -c "source ${home}/.config/fish/config.fish"
+
+curl -sL https://git.io/fisher > fisher
+fish -c "source fisher 
+fisher install jorgebucaran/fisher
+fisher install rafaelrinaldi/pure"
+rm -f fisher 
+if ! grep -Fxq "/usr/bin/fish" /etc/shells; then
+    sudo echo /usr/bin/fish | sudo tee -a /etc/shells
+fi
+sudo chsh -s /usr/bin/fish
+echo "fish installed" >> log
+
+# i3
+cp ./tools/i3/config "${home}/.config/i3/config"
+cp ./tools/i3/.i3status.conf "${home}/.i3status.conf"
+echo "i3 installed" >> log
+
+# git
+git config --global user.name 'nourit'
+git config --global user.email 'reply.nourit@gmail.com'
+echo "git installed" >> log
+
+# screenkey
+unzip -o -q "./tools/screenkey.zip" -d "./tools/screenkey"
+cd ./tools/screenkey/screenkey-master
+sudo apt install -y python3-gi gir1.2-gtk-3.0 \
+ python3-gi-cairo python3-cairo \
+ python3-setuptools python3-babel \
+ python3-dbus fonts-font-awesome slop
+sudo ./setup.py install
+cd ../../../
+rm -rf "./tools/screenkey"
+echo "screenkey installed" >> log
+
+# shutter
+sudo add-apt-repository ppa:linuxuprising/shutter -y
+sudo apt install shutter -y
+echo "shutter installed" >> log
+
+# Flutter
+sudo apt-get update -y && sudo apt-get upgrade -y;
+sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+sudo apt-get install -y \
+    libc6:i386 libncurses5:i386 \
+    libstdc++6:i386 lib32z1 \
+    libbz2-1.0:i386
+apt install clang -y  
+apt install cmake -y
+apt install ninja-build -y
+apt install libgtk-3-dev -y
+# ext install Dart-Code.flutter
+echo '
+    set -gx FLUTTER_HOME $HOME/flutter/bin
+    set -gx PATH $PATH:$FLUTTER_HOME
+' >> "${home}/.config/fish/config.fish"
+fish -c "source ${home}/.config/fish/config.fish"
+echo "flutter installed" >> log  
+
+# unclutter
+sudo apt install unclutter -y 
+unclutter -idle 1
+
+# ngrok
+ curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+ ngrok config add-authtoken
+
+
+# done
+echo "done ----------" >> log  
