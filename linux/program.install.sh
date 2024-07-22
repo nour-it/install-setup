@@ -1,6 +1,9 @@
 sudo apt update
 sudo apt upgrade -y
 
+# requires
+sudo apt install gcc make vagrant zeal -y 
+
 # executables .deb
 sudo dpkg -i ./programs/*.deb
 sudo apt --fix-broken install
@@ -11,7 +14,7 @@ sudo apt install -y openjdk-17-jdk
 # Nodejs
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - &&\
 sudo apt install -y nodejs
-sudo npm install -g yarn pnpm expo-cli firebase-tools
+sudo npm install -g yarn pnpm expo-cli firebase-tools heroku
 
 # docker
 sudo apt update
@@ -32,12 +35,23 @@ sudo add-apt-repository -y ppa:ondrej/php
 sudo apt update 
 sudo apt install -y php8.3
 sudo update-rc.d apache2 disable
+sudo apt install -y php-json php-mbstring php-tokenizer php-xml php-mysql php-pgsql
+
+echo '
+  alias composer="docker run --rm --interactive --tty --volume ./:/app --user (id -u):(id -g) composer "
+' >> "${home}/.config/fish/config.fish"
+
+# Python 
+sudo apt install python3.8-venv python3-tk -y 
 
 # Obs studio 
 sudo add-apt-repository -y ppa:obsproject/obs-studio
 sudo apt update
 sudo apt -y update
 sudo apt -y install ffmpeg obs-studio
+
+# FileZilla
+sudo apt install -y filezilla
 
 # Audacity
 sudo apt install -y fuse libfuse2
@@ -66,3 +80,12 @@ cp google-cloud-sdk/ ~/
 bash ~/google-cloud-sdk/install.sh
 rm -rf google-cloud-sdk/
 rm google-cloud-cli-475.0.0-linux-x86_64.tar.gz
+
+echo '
+    if [ -f '~/google-cloud-sdk/path.fish.inc' ]; 
+        . '~/google-cloud-sdk/path.fish.inc'; 
+    end
+' >> "${home}/.config/fish/config.fish"
+
+# Zed code editor
+curl https://zed.dev/install.sh | sh

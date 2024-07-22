@@ -7,7 +7,7 @@ choco install  vscode.install git php nodejs.install openjdk17 androidstudio obs
 git config --global user.name 'nourit'
 git config --global user.email 'reply.nourit@gmail.com'
 
-npm install -g yarn pnpm expo-cli
+npm install -g yarn pnpm expo-cli firebase-tools heroku
 
 pause
 
